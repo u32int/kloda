@@ -1,6 +1,7 @@
 namespace kloda;
 
 using Exiled.API.Features;
+using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Player;
 
 public class EventHandler
@@ -76,6 +77,24 @@ public class EventHandler
 			Webhook.SendTemplated(Kloda.instance.Config.TeamkillWebhookMsg, 
 					ev.Player, ev.Attacker, ev.DamageHandler);
 			return;
+		}
+	}
+
+	public static void Banned(BannedEventArgs ev)
+	{
+		if (Kloda.instance.Config.BanWebhookEnable)
+		{
+			Webhook.SendTemplated(Kloda.instance.Config.BanWebhookMsg,
+				              ev.Target, ev.Player);
+		}
+	}
+
+	public static void Muted(IssuingMuteEventArgs ev)
+	{
+		if (Kloda.instance.Config.BanWebhookEnable)
+		{
+			Webhook.SendTemplated(Kloda.instance.Config.MuteWebhookMsg,
+				              ev.Player);
 		}
 	}
 }

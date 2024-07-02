@@ -40,6 +40,14 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public bool SuicideWebhookEnable { get; set; } = true;
 	public string SuicideWebhookMsg { get; set; } = "[%Time%] %Player% died by suicide using %DamageType% :((";
 
+	// Bans
+	public bool BanWebhookEnable { get; set; } = true;
+	public string BanWebhookMsg { get; set; } = "[%Time%] %Target% was banned by %Issuer%.";
+
+	// Mutes
+	public bool MuteWebhookEnable { get; set; } = true;
+	public string MuteWebhookMsg { get; set; } = "[%Time%] %Target% was muted.";
+
 	// Player verify (server join)
 	public bool JoinWebhookEnable { get; set; } = true;
 	public string JoinWebhookMsg { get; set; } = "[%Time%] %Player% joined the server!";
@@ -62,6 +70,8 @@ public class Kloda: Plugin<Config>
 		Exiled.Events.Handlers.Player.Verified += EventHandler.Verified;
 		Exiled.Events.Handlers.Player.Dying += EventHandler.Death;
 		Exiled.Events.Handlers.Player.Hurting += EventHandler.Hurting;
+		Exiled.Events.Handlers.Player.Banned += EventHandler.Banned;
+		Exiled.Events.Handlers.Player.IssuingMute += EventHandler.Muted;
 
 		base.OnEnabled();
 
@@ -76,6 +86,8 @@ public class Kloda: Plugin<Config>
 		Exiled.Events.Handlers.Player.Verified -= EventHandler.Verified;
 		Exiled.Events.Handlers.Player.Dying -= EventHandler.Death;
 		Exiled.Events.Handlers.Player.Hurting -= EventHandler.Hurting;
+		Exiled.Events.Handlers.Player.Banned -= EventHandler.Banned;
+		Exiled.Events.Handlers.Player.IssuingMute -= EventHandler.Muted;
 
 		base.OnDisabled();
 		Log.Info("o7");
@@ -109,6 +121,18 @@ public class Kloda: Plugin<Config>
 
 		this.Config.AttackerDamageMsg = VictimAttackerReplace(this.Config.AttackerDamageMsg);
 		this.Config.VictimDamageMsg = VictimAttackerReplace(this.Config.VictimDamageMsg);
+
+		Func<string, string> TargetIssuerReplace = 
+			msg => msg
+				.Replace("%Target%", "%PlayerA_Nick%")
+				.Replace("%Target_ID%", "%PlayerA_ID%")
+				.Replace("%Target_Role%", "%PlayerA_Role%")
+				.Replace("%Issuer%", "%PlayerB_Nick%")
+				.Replace("%Issuer_ID%", "%PlayerB_ID%")
+				.Replace("%Issuer_Role%", "%PlayerB_Role%");
+
+		this.Config.BanWebhookMsg = TargetIssuerReplace(this.Config.BanWebhookMsg);
+		this.Config.MuteWebhookMsg = TargetIssuerReplace(this.Config.MuteWebhookMsg);
 
 		Log.Info("config normalized");
 	}
