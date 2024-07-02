@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup>
+   	<LangVersion>10.0</LangVersion>
+    </PropertyGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="exiled" Version="8.9.6" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+ 	<Reference Include="Assembly-CSharp">
+		<HintPath>./server_dlls/Assembly-CSharp-firstpass.dll</HintPath>
+	</Reference>
+ 	<Reference Include="UnityEngine">
+		<HintPath>./server_dlls/UnityEngine.dll</HintPath>
+	</Reference>
+ 	<Reference Include="UnityEngine.CoreModule">
+		<HintPath>./server_dlls/UnityEngine.CoreModule.dll</HintPath>
+	</Reference>
+ 	<Reference Include="UnityEngine.PhysicsModule">
+		<HintPath>./server_dlls/UnityEngine.PhysicsModule.dll</HintPath>
+	</Reference>
+ 	<Reference Include="Mirror">
+		<HintPath>./server_dlls/Mirror.dll</HintPath>
+	</Reference>
+   </ItemGroup>
+
+
+</Project>
