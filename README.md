@@ -1,4 +1,8 @@
-# kloda: Knowledgable Logging Of Data (Altruistic)
+<p align="center">
+    <img src="./res/log.png" width=200 height=200>
+</p>
+
+# kloda: Knowledgeable Logging Of Data (Altruistic)
 kloda is an SCP:SL plugin for logging useful data and relaying it to a discord channel via [webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks).
 
 **Features**:
