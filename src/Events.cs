@@ -93,12 +93,14 @@ public class EventHandler
 
 	public static void Banned(BannedEventArgs ev)
 	{
-		if (Kloda.instance.Config.BanWebhookEnable)
+		if (Kloda.instance.Config.BanWebhookEnable && ev.Target != null)
 		{
+			var duration = TimeSpan.FromTicks(ev.Details.Expires - ev.Details.IssuanceTime);
+
 			string WebhookMsg = Kloda.instance.Config.BanWebhookMsg
-				.Replace("%IssuanceTime%", ev.Details.IssuanceTime.ToString())
-				.Replace("%ExpiryDate%", ev.Details.Expires.ToString())
-				.Replace("%Duration%", (ev.Details.Expires - ev.Details.IssuanceTime).ToString())
+				.Replace("%IssuanceTime%", new DateTime(ev.Details.IssuanceTime).ToString("yyyy-MM-dd HH:mm:ss"))
+				.Replace("%ExpiryDate%", new DateTime(ev.Details.Expires).ToString("yyyy-MM-dd HH:mm:ss"))
+				.Replace("%Duration%", $"{duration.ToString("%d")} Days {duration.ToString("%h")} Hours {duration.ToString("%m")} Minutes {duration.ToString("%s")} Seconds")
 				.Replace("%Reason%", ev.Details.Reason);
 
 			Webhook.QueueEmbed(new DiscordEmbed(
@@ -112,7 +114,7 @@ public class EventHandler
 	{
 		if (Kloda.instance.Config.BanWebhookEnable && ev.IsAllowed)
 		{
-			string WebhookMsg = Kloda.instance.Config.KickWebhookMsg
+			string WebhookMsg = Kloda.instance.Config.MuteWebhookMsg
 				.Replace("%IsIntercom%", ev.IsIntercom.ToString());
 
 			Webhook.QueueEmbed(new DiscordEmbed(

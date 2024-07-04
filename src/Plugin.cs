@@ -20,6 +20,8 @@ public class Config : Exiled.API.Interfaces.IConfig
 	// Discord
 	public string DiscordWebhookUrl { get; set; } = "";
 	public bool DiscordWebhookEnable { get; set; } = false;
+	public string DiscordNickname { get; set; } = "kloda";
+	public string DiscordAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
 	public float DiscordWebhookCooldown { get; set; } = 5;
 	public float DiscordWebhookQueueFlush { get; set; } = 10;
 	public string EmbedJoinColor { get; set; } = "22c17f";
@@ -48,7 +50,7 @@ public class Config : Exiled.API.Interfaces.IConfig
 
 	// Bans
 	public bool BanWebhookEnable { get; set; } = true;
-	public string BanWebhookMsg { get; set; } = "**%Target%** was banned by **%Issuer%**.";
+	public string BanWebhookMsg { get; set; } = "**%Target%** was banned by **%Issuer%**. Reason: %Reason%. Duration: %Duration%. Expires: %ExpiryDate%";
 
 	// Mutes
 	public bool MuteWebhookEnable { get; set; } = true;
@@ -56,7 +58,7 @@ public class Config : Exiled.API.Interfaces.IConfig
 
 	// Kicking
 	public bool KickWebhookEnable { get; set; } = true;
-	public string KickWebhookMsg { get; set; } = "**%Target%** was kicked by **%Issuer%**, reason: `%Reason%`";
+	public string KickWebhookMsg { get; set; } = "**%Target%** was kicked by **%Issuer%**. Reason: `%Reason%`.";
 
 	// Player verify (server join)
 	public bool JoinWebhookEnable { get; set; } = false;

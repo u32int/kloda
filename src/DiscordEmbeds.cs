@@ -59,7 +59,8 @@ public class DiscordEmbed
                 return new StringContent(
 			Encoding.UTF8.GetString(
 				Utf8Json.JsonSerializer.Serialize<object>(new { 
-					username = "kloda", 
+					username = Kloda.instance.Config.DiscordNickname, 
+					avatar_url = Kloda.instance.Config.DiscordAvatarUrl,
 					embeds = new List<object>() { this.IntoObject() },
 				})
 			), 
@@ -99,7 +100,8 @@ public class EmbedList
 		StringContent sc = new StringContent(
 			Encoding.UTF8.GetString(
 				Utf8Json.JsonSerializer.Serialize<object>(new { 
-					username = "kloda", 
+					username = Kloda.instance.Config.DiscordNickname, 
+					avatar_url = Kloda.instance.Config.DiscordAvatarUrl,
 					embeds = this.Embeds,
 				})
 			), 
@@ -144,6 +146,7 @@ public class CombinedList
 		DiscordEmbed embed = new DiscordEmbed(content: this.LogText, footerTimestamp: false);
 		embed.Footer = $"{this.FirstTimestamp} To {DateTime.Now.ToString("HH:mm:ss")}";
 		this.FirstTimestamp = null;
+		this.LogText = "";
 		return embed.IntoStringContent();
 	}
 }

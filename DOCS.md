@@ -7,6 +7,8 @@ kloda:
   broadcast_duration: 5
   discord_webhook_url: ''
   discord_webhook_enable: false
+  discord_nickname: 'kloda'
+  discord_avatar_url: '<omited>'
   discord_webhook_cooldown: 5
   discord_webhook_queue_flush: 10
   embed_join_color: '22c17f'
