@@ -8,8 +8,7 @@ kloda is an SCP:SL plugin for logging useful data and relaying it to a discord c
 **Features**:
  - Webhook event logging, namely:
    - Teamkilling, dealing damage to teammates, killing handcuffed players
-   - [TODO] Ban logs
-  - [TODO] In-game staff notifications
+   - Ban logs
   - Warnings optionally broadcasted to offending players
 
 ## Docs
