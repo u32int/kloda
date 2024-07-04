@@ -19,12 +19,18 @@ public class Config : Exiled.API.Interfaces.IConfig
 
 	// Discord
 	public string DiscordWebhookUrl { get; set; } = "";
-	public bool EnableDiscordWebhook { get; set; } = false;
+	public bool DiscordWebhookEnable { get; set; } = false;
+	public float DiscordWebhookCooldown { get; set; } = 5;
+	public float DiscordWebhookQueueFlush { get; set; } = 10;
+	public string EmbedJoinColor { get; set; } = "22c17f";
+	public string EmbedBanColor { get; set; } = "d13934";
+	public string EmbedMuteColor { get; set; } = "c68e2b";
+	public string EmbedKickColor { get; set; } = "eae738";
 
 	// Damage 
 	public bool IgnoreDamageAfterRoundEnd { get; set; } = true;
-	public bool DamageWebhookEnable { get; set; } = true;
-	public string DamageWebhookMsg { get; set; } = "[%Time%] %Attacker% damaged their teammate %Victim%";
+	public bool TeamDamageWebhookEnable { get; set; } = true;
+	public string TeamDamageWebhookMsg { get; set; } = "**%Attacker%** damaged their teammate **%Victim%**";
 	public bool NotifyAttacker { get; set; } = true;
 	public string AttackerDamageMsg { get; set; } = "<color=red>Warning</color> You've attacked your teammate";
 	public bool NotifyVictim { get; set; } = false;
@@ -32,25 +38,29 @@ public class Config : Exiled.API.Interfaces.IConfig
 
 	// Death
 	public bool IgnoreDeathAfterRoundEnd { get; set; } = true;
-	public bool TeamkillWebhookEnable { get; set; } = true;
-	public string TeamkillWebhookMsg { get; set; } = "[%Time%] %Victim% teamkilled by %Attacker%";
+	public bool TeamKillWebhookEnable { get; set; } = true;
+	public string TeamKillWebhookMsg { get; set; } = "**%Victim%** teamkilled by **%Attacker%**";
 	public bool CuffedKillWebhookEnable { get; set; } = true;
 	public string CuffedKillWebhookMsg { get; set; } = 
-		"[%Time%] %Victim% was killed by %Attacker% using %DamageType%, while %Victim% was handcuffed";
+		"**%Victim%** was killed by **%Attacker%** using **%DamageType%**, while **%Victim%** was handcuffed";
 	public bool SuicideWebhookEnable { get; set; } = true;
-	public string SuicideWebhookMsg { get; set; } = "[%Time%] %Player% died by suicide using %DamageType% :((";
+	public string SuicideWebhookMsg { get; set; } = "**%Player%** died by suicide using **%DamageType%** :((";
 
 	// Bans
 	public bool BanWebhookEnable { get; set; } = true;
-	public string BanWebhookMsg { get; set; } = "[%Time%] %Target% was banned by %Issuer%.";
+	public string BanWebhookMsg { get; set; } = "**%Target%** was banned by **%Issuer%**.";
 
 	// Mutes
 	public bool MuteWebhookEnable { get; set; } = true;
-	public string MuteWebhookMsg { get; set; } = "[%Time%] %Target% was muted.";
+	public string MuteWebhookMsg { get; set; } = "**%Target%** was muted.";
+
+	// Kicking
+	public bool KickWebhookEnable { get; set; } = true;
+	public string KickWebhookMsg { get; set; } = "**%Target%** was kicked.";
 
 	// Player verify (server join)
 	public bool JoinWebhookEnable { get; set; } = true;
-	public string JoinWebhookMsg { get; set; } = "[%Time%] %Player% joined the server!";
+	public string JoinWebhookMsg { get; set; } = "**%Player%** joined the server!";
 } 
 
 // main class of this entire object oriented endeavour apparently
@@ -72,6 +82,7 @@ public class Kloda: Plugin<Config>
 		Exiled.Events.Handlers.Player.Hurting += EventHandler.Hurting;
 		Exiled.Events.Handlers.Player.Banned += EventHandler.Banned;
 		Exiled.Events.Handlers.Player.IssuingMute += EventHandler.Muted;
+		Exiled.Events.Handlers.Player.Kicking += EventHandler.Kick;
 
 		base.OnEnabled();
 
@@ -88,6 +99,7 @@ public class Kloda: Plugin<Config>
 		Exiled.Events.Handlers.Player.Hurting -= EventHandler.Hurting;
 		Exiled.Events.Handlers.Player.Banned -= EventHandler.Banned;
 		Exiled.Events.Handlers.Player.IssuingMute -= EventHandler.Muted;
+		Exiled.Events.Handlers.Player.Kicking -= EventHandler.Kick;
 
 		base.OnDisabled();
 		Log.Info("o7");
@@ -95,6 +107,7 @@ public class Kloda: Plugin<Config>
 
 	// Changes the loaded config webhook message templates to ones that make more
 	// sense programatically but are inconvenient for end users :]
+	// Note: this is only called once, at plugin load.
 	// ex:
 	// 	In the PlayerJoinMsg option: %Nick% -> %PlayerA_Nick%
 	void NormalizeConfigMessages()
@@ -121,6 +134,9 @@ public class Kloda: Plugin<Config>
 
 		this.Config.AttackerDamageMsg = VictimAttackerReplace(this.Config.AttackerDamageMsg);
 		this.Config.VictimDamageMsg = VictimAttackerReplace(this.Config.VictimDamageMsg);
+		this.Config.TeamDamageWebhookMsg = VictimAttackerReplace(this.Config.TeamDamageWebhookMsg);
+		this.Config.TeamKillWebhookMsg = VictimAttackerReplace(this.Config.TeamKillWebhookMsg);
+		this.Config.CuffedKillWebhookMsg = VictimAttackerReplace(this.Config.CuffedKillWebhookMsg);
 
 		Func<string, string> TargetIssuerReplace = 
 			msg => msg
@@ -133,6 +149,7 @@ public class Kloda: Plugin<Config>
 
 		this.Config.BanWebhookMsg = TargetIssuerReplace(this.Config.BanWebhookMsg);
 		this.Config.MuteWebhookMsg = TargetIssuerReplace(this.Config.MuteWebhookMsg);
+		this.Config.KickWebhookMsg = TargetIssuerReplace(this.Config.KickWebhookMsg);
 
 		Log.Info("config normalized");
 	}

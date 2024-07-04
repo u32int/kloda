@@ -17,14 +17,14 @@ using Utf8Json;
 public static class Webhook
 {
 	static HttpClient hc = new();
-	public static Queue<string> messageQueue = new Queue<string>();
+	public static Queue<StringContent> messageQueue = new Queue<StringContent>();
 
 	static async Task HookDoPost(StringContent jsonContent)
 	{
-		if (!Kloda.instance.Config.EnableDiscordWebhook)
+		if (!Kloda.instance.Config.DiscordWebhookEnable)
 			return;
 
-		Log.Info("sending discord webhook message");
+		Log.Info("Sending discord webhook message..");
 		using HttpResponseMessage response = await hc.PostAsync(Kloda.instance.Config.DiscordWebhookUrl, jsonContent);
 		if (!response.IsSuccessStatusCode)
 		{
@@ -33,16 +33,44 @@ public static class Webhook
 		}
 	}
 
-	// Send webhook message with the msg string verbatim, without template replecement etc
-	public static void SendRaw(string msg)
+	public static EmbedList G_EmbedList = new EmbedList();
+	public static CombinedList G_CombinedList = new CombinedList();
+	
+	/// Add an embed to be sent
+	public static void QueueEmbed(DiscordEmbed embed)
 	{
-		// subject to change, hence the function wrapper in the first place
-		messageQueue.Enqueue(msg);
+		if (!G_EmbedList.Add(embed))
+		{
+			StringContent sc = G_EmbedList.ClearIntoStringContent();
+			messageQueue.Enqueue(sc);
+			// The current embed still hasn't been sent, try adding it.
+			if (!G_EmbedList.Add(embed))
+			{
+				Log.Error("Adding an embed to a newly cleared EmbedList failed, this is unexpected and likely a  bug. A message has been lost.");
+			}
+		}
 	}
 
-	public static void SendTemplated(string msg, Player? playerA, Player? playerB = null, DamageHandler? dmg = null)
+	/// Add a message to be sent as a combined embed
+	public static void QueueCombined(string message)
 	{
-		SendRaw(Template.Replace(msg, playerA, playerB, dmg));
+		if (!G_CombinedList.Add(message))
+		{
+			StringContent sc = G_CombinedList.ClearIntoStringContent();
+			messageQueue.Enqueue(sc);
+			// The current message still hasn't been sent, try adding it.
+			if (!G_CombinedList.Add(message))
+			{
+				Log.Error("Adding a message to a newly cleared CombinedList failed, this is unexpected and likely a bug. A message has been lost.");
+			}
+		}
+	}
+
+	// This is exists just avoid some typing at the call site
+	public static void QueueCombinedTemplated(string message, 
+			Player? playerA, Player? playerB = null, DamageHandler? dmg = null)
+	{
+		QueueCombined(Template.Replace(message, playerA, playerB, dmg));
 	}
 
 	// Runs in the background and hopefully delegates things to be actually sent..
@@ -53,24 +81,34 @@ public static class Webhook
 		// We definitely shouldn't be doing this based on a fixed timeout..
 		for (;;) 
 		{
-			if (messageQueue.Count != 0)
+			// Check if any of the queues have stale messages
+			if (G_EmbedList.FirstTimestamp.HasValue && 
+			    (DateTime.Now - G_EmbedList.FirstTimestamp.Value).TotalSeconds > 
+			    					Kloda.instance.Config.DiscordWebhookQueueFlush)
 			{
-				var msg = messageQueue.Dequeue();
-
-                        	StringContent content = new StringContent(
-					Encoding.UTF8.GetString(
-						Utf8Json.JsonSerializer.Serialize<object>(new { 
-							username = "kloda", 
-							content = msg,
-						})
-					), 
-					Encoding.UTF8, "application/json");
-
-				_ = HookDoPost(content);
+				Log.Info("Pushing stale embed list..");
+				StringContent sc = G_EmbedList.ClearIntoStringContent();
+				messageQueue.Enqueue(sc);
 			}
 
-			// cooldown in-between requests
-			yield return Timing.WaitForSeconds(2);
+			if (G_CombinedList.FirstTimestamp.HasValue && 
+			    (DateTime.Now - G_CombinedList.FirstTimestamp.Value).TotalSeconds > 
+			    					Kloda.instance.Config.DiscordWebhookQueueFlush)
+			{
+				Log.Info("Pushing stale combined list..");
+				StringContent sc = G_CombinedList.ClearIntoStringContent();
+				messageQueue.Enqueue(sc);
+			}
+
+			// Send the first message in queue
+			if (messageQueue.Count != 0)
+			{
+				_ = HookDoPost(messageQueue.Dequeue());
+			}
+
+			// manual cooldown in-between requests 
+			// (5 seconds by default, don't set it under 2 if you don't wanna get rate limited)
+			yield return Timing.WaitForSeconds(Kloda.instance.Config.DiscordWebhookCooldown);
 		}
 	}
 }
