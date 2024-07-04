@@ -95,8 +95,13 @@ public class EventHandler
 	{
 		if (Kloda.instance.Config.BanWebhookEnable)
 		{
+			string WebhookMsg = Kloda.instance.Config.BanWebhookMsg
+				.Replace("%IssuanceTime%", ev.Details.IssuanceTime.ToString())
+				.Replace("%ExpiryDate%", ev.Details.Expires.ToString())
+				.Replace("%Reason%", ev.Details.Reason);
+
 			Webhook.QueueEmbed(new DiscordEmbed(
-				content: Template.Replace(Kloda.instance.Config.BanWebhookMsg, ev.Target, ev.Player),
+				content: Template.Replace(WebhookMsg, ev.Target, ev.Player),
 				colorHex: Kloda.instance.Config.EmbedBanColor
 			));
 		}
@@ -104,10 +109,13 @@ public class EventHandler
 
 	public static void Muted(IssuingMuteEventArgs ev)
 	{
-		if (Kloda.instance.Config.BanWebhookEnable)
+		if (Kloda.instance.Config.BanWebhookEnable && ev.IsAllowed)
 		{
+			string WebhookMsg = Kloda.instance.Config.KickWebhookMsg
+				.Replace("%IsIntercom%", ev.IsIntercom.ToString());
+
 			Webhook.QueueEmbed(new DiscordEmbed(
-				content: Template.Replace(Kloda.instance.Config.MuteWebhookMsg, ev.Player),
+				content: Template.Replace(WebhookMsg, ev.Player),
 				colorHex: Kloda.instance.Config.EmbedMuteColor
 			));
 		}
@@ -115,10 +123,13 @@ public class EventHandler
 
 	public static void Kick(KickingEventArgs ev)
 	{
-		if (Kloda.instance.Config.KickWebhookEnable)
+		if (Kloda.instance.Config.KickWebhookEnable && ev.IsAllowed)
 		{
+			string WebhookMsg = Kloda.instance.Config.KickWebhookMsg
+				.Replace("%Reason%", ev.Reason);
+
 			Webhook.QueueEmbed(new DiscordEmbed(
-				content: Template.Replace(Kloda.instance.Config.KickWebhookMsg, ev.Target, ev.Player),
+				content: Template.Replace(WebhookMsg, ev.Target, ev.Player),
 				colorHex: Kloda.instance.Config.EmbedKickColor
 			));
 		}

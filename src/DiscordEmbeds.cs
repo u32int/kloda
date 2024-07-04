@@ -11,22 +11,15 @@ public class DiscordEmbed
 	public string Content { get; set; }
 	public int Color { get; set; }
 	public string Footer { get; set; }
-	public bool FooterEnable { get; set; }
 
 	public DiscordEmbed(string content, string colorHex = "e6e6e6", bool footerTimestamp = true)
 	{
 		this.Content = content;	
 		this.SetColorHex(colorHex);
 		if (footerTimestamp)
-		{
 			this.Footer = DateTime.Now.ToString();
-			this.FooterEnable = true;
-		}
 		else
-		{
 			this.Footer = "";
-			this.FooterEnable = false;
-		}
 	}
 
 	public void SetColorHex(string hexColor)
@@ -43,7 +36,7 @@ public class DiscordEmbed
 	{
 		// this is slightly spaghetti-ish but I don't know how to add fields to an existing "object"
 		// thing, sorry
-		if (this.FooterEnable)
+		if (this.Footer != "")
 		{
 			return new {
 				description = this.Content,
@@ -131,19 +124,25 @@ public class CombinedList
 
 	public bool Add(string message)
 	{
-		if (LogText.Length + message.Length >= 5_500)
+		if (LogText.Length + message.Length >= 5_200)
 			return false;
 		
 		if (LogText.Length == 0)
+		{
 			this.FirstTimestamp = DateTime.Now;
-		LogText += "\n" + message;
+		}
+		else
+		{
+			LogText += "\n";
+		}
+		LogText += "- " + message;
 		return true;
 	}
 
 	public StringContent ClearIntoStringContent()
 	{
 		DiscordEmbed embed = new DiscordEmbed(content: this.LogText, footerTimestamp: false);
-		embed.Footer = $"{this.FirstTimestamp} To {DateTime.Now}";
+		embed.Footer = $"{this.FirstTimestamp} To {DateTime.Now.ToString("HH:mm:ss")}";
 		this.FirstTimestamp = null;
 		return embed.IntoStringContent();
 	}

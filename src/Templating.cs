@@ -6,7 +6,7 @@ using Exiled.Events.EventArgs.Player;
 
 public class Template
 {
-	// generic template replacement
+	// generic template replacement extracted to reduce code duplication
 	public static string Replace(string msg, Player? playerA, Player? playerB = null, DamageHandler? dmg = null)
 	{
 		string templated = msg

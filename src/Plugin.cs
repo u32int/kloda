@@ -56,7 +56,7 @@ public class Config : Exiled.API.Interfaces.IConfig
 
 	// Kicking
 	public bool KickWebhookEnable { get; set; } = true;
-	public string KickWebhookMsg { get; set; } = "**%Target%** was kicked.";
+	public string KickWebhookMsg { get; set; } = "**%Target%** was kicked by **%Issuer%**, reason: `%Reason%`";
 
 	// Player verify (server join)
 	public bool JoinWebhookEnable { get; set; } = true;
