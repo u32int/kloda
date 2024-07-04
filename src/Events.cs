@@ -98,6 +98,7 @@ public class EventHandler
 			string WebhookMsg = Kloda.instance.Config.BanWebhookMsg
 				.Replace("%IssuanceTime%", ev.Details.IssuanceTime.ToString())
 				.Replace("%ExpiryDate%", ev.Details.Expires.ToString())
+				.Replace("%Duration%", (ev.Details.Expires - ev.Details.IssuanceTime).ToString())
 				.Replace("%Reason%", ev.Details.Reason);
 
 			Webhook.QueueEmbed(new DiscordEmbed(
