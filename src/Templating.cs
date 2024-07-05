@@ -16,7 +16,7 @@ public class Template
 		{
 			templated = templated
 			  .Replace("%PlayerA_Nick%", pA.Nickname)
-			  .Replace("%PlayerA_ID%", pA.RawUserId)
+			  .Replace("%PlayerA_SteamID%", pA.RawUserId)
 			  .Replace("%PlayerA_Role%", pA.Role.Type.ToString());
 		}
 
@@ -24,7 +24,7 @@ public class Template
 		{
 			templated = templated
 			  .Replace("%PlayerB_Nick%", pB.Nickname)
-			  .Replace("%PlayerB_ID%", pB.RawUserId)
+			  .Replace("%PlayerB_SteamID%", pB.RawUserId)
 			  .Replace("%PlayerB_Role%", pB.Role.Type.ToString());
 		}
 

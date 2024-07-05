@@ -41,7 +41,6 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public bool IgnoreDamageAfterRoundEnd { get; set; } = true;
 	public bool TeamDamageWebhookEnable { get; set; } = true;
 	public string TeamDamageWebhookMsg { get; set; } = "**%Attacker%** damaged their teammate **%Victim%**";
-	public string TeamDamageWebhookUrl { get; set; } = "";
 	public bool NotifyAttacker { get; set; } = true;
 	public string AttackerDamageMsg { get; set; } = "<color=red>Warning</color> You've attacked your teammate";
 	public bool NotifyVictim { get; set; } = false;
@@ -83,7 +82,7 @@ public class Kloda: Plugin<Config>
 
 	public override string Name => "kloda";
 	public override string Author => "u32int";
-	public override Version Version => new Version(1, 1, 0);
+	public override Version Version => new Version(1, 1, 1);
 	public override Version RequiredExiledVersion => new Version(8, 0, 0);
 
 	public override void OnEnabled()
@@ -139,8 +138,8 @@ public class Kloda: Plugin<Config>
 		Func<string, string> GenericReplace = 
 			msg => msg
 				.Replace("%Player%", "%PlayerA_Nick%")
-				.Replace("%ID%", "%PlayerA_ID%")
-				.Replace("%Role%", "%PlayerA_Role%");
+				.Replace("%Player_SteamID%", "%PlayerA_SteamID%")
+				.Replace("%Player_Role%", "%PlayerA_Role%");
 
 		this.Config.JoinWebhookMsg = GenericReplace(this.Config.JoinWebhookMsg);
 		this.Config.SuicideWebhookMsg = GenericReplace(this.Config.SuicideWebhookMsg);
@@ -148,10 +147,10 @@ public class Kloda: Plugin<Config>
 		Func<string, string> VictimAttackerReplace = 
 			msg => msg
 				.Replace("%Victim%", "%PlayerA_Nick%")
-				.Replace("%Victim_ID%", "%PlayerA_ID%")
+				.Replace("%Victim_SteamID%", "%PlayerA_SteamID%")
 				.Replace("%Victim_Role%", "%PlayerA_Role%")
 				.Replace("%Attacker%", "%PlayerB_Nick%")
-				.Replace("%Attacker_ID%", "%PlayerB_ID%")
+				.Replace("%Attacker_SteamID%", "%PlayerB_ID%")
 				.Replace("%Attacker_Role%", "%PlayerB_Role%");
 
 		this.Config.AttackerDamageMsg = VictimAttackerReplace(this.Config.AttackerDamageMsg);
@@ -163,10 +162,10 @@ public class Kloda: Plugin<Config>
 		Func<string, string> TargetIssuerReplace = 
 			msg => msg
 				.Replace("%Target%", "%PlayerA_Nick%")
-				.Replace("%Target_ID%", "%PlayerA_ID%")
+				.Replace("%Target_SteamID%", "%PlayerA_ID%")
 				.Replace("%Target_Role%", "%PlayerA_Role%")
 				.Replace("%Issuer%", "%PlayerB_Nick%")
-				.Replace("%Issuer_ID%", "%PlayerB_ID%")
+				.Replace("%Issuer_SteamID%", "%PlayerB_ID%")
 				.Replace("%Issuer_Role%", "%PlayerB_Role%");
 
 		this.Config.BanWebhookMsg = TargetIssuerReplace(this.Config.BanWebhookMsg);

@@ -46,20 +46,16 @@ public class EventHandler
 		if (Kloda.instance.Config.NotifyAttacker)
 		{
 			ev.Attacker.ClearBroadcasts();
-			ev.Attacker.Broadcast(
-				duration: Kloda.instance.Config.BroadcastDuration, 
-				message: Template.Replace(Kloda.instance.Config.AttackerDamageMsg, ev.Player, ev.Attacker)
-				// type: Broadcast.BroadcastFlags.Normal // <-- This thing just doesn't want to compile...
-			);
+			ev.Attacker.ShowHint(Template.Replace(
+						Kloda.instance.Config.AttackerDamageMsg, ev.Player, ev.Attacker), 
+					     Kloda.instance.Config.BroadcastDuration);
 		}
 
 		if (Kloda.instance.Config.NotifyVictim)
 		{
 			ev.Player.ClearBroadcasts();
-			ev.Player.Broadcast(
-					Kloda.instance.Config.BroadcastDuration, 
-					Template.Replace(Kloda.instance.Config.VictimDamageMsg, ev.Player, ev.Attacker)
-			);
+			ev.Player.ShowHint(Template.Replace(Kloda.instance.Config.VictimDamageMsg, ev.Player, ev.Attacker),
+					Kloda.instance.Config.BroadcastDuration);
 		}
 
 		if (Kloda.instance.Config.TeamDamageWebhookEnable)
