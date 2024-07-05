@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 
 using Exiled.API.Features;
+using PlayerRoles;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 
@@ -29,6 +30,10 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public string EmbedMuteColor { get; set; } = "c68e2b";
 	public string EmbedUnMuteColor { get; set; } = "c68e2b";
 	public string EmbedKickColor { get; set; } = "eae738";
+
+	// Pertains both to team damage and team kills
+	public List<RoleTypeId> TeamHarmRoleWhiteList { get; set; } = 
+		new List<RoleTypeId>() { RoleTypeId.ClassD };
 
 	// Damage 
 	public bool IgnoreDamageAfterRoundEnd { get; set; } = true;

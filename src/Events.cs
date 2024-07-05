@@ -3,6 +3,7 @@ namespace kloda;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs;
 using Exiled.Events.EventArgs.Player;
+using PlayerRoles;
 
 public class EventHandler
 {
@@ -19,7 +20,7 @@ public class EventHandler
 
 	public static void Hurting(HurtingEventArgs ev)
 	{
-		if (!Server.FriendlyFire) // TODO: is this necessary?
+		if (!Server.FriendlyFire)
 			return;
 
 		if (ev.Attacker == null || ev.Player == null)
@@ -32,6 +33,12 @@ public class EventHandler
 			return;
 
 		// At this point this has to be team damage
+
+		if (Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Attacker.Role)
+		    && Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Player.Role))
+		{
+			return;
+		}
 
 		// Attacker/Victim broadcast notifications
 		if (Kloda.instance.Config.NotifyAttacker)
@@ -65,6 +72,12 @@ public class EventHandler
 		// Most likely death caused by something that is not a player; i.e. fall damage or tesla.
 		if (ev.Attacker == null)
 			return;
+
+		if (Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Attacker.Role)
+		    && Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Player.Role))
+		{
+			return;
+		}
 
 		// Suicide
 		if (ev.Attacker == ev.Player && Kloda.instance.Config.SuicideWebhookEnable)
