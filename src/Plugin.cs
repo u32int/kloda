@@ -83,7 +83,7 @@ public class Kloda: Plugin<Config>
 
 	public override string Name => "kloda";
 	public override string Author => "u32int";
-	public override Version Version => new Version(1, 0, 0);
+	public override Version Version => new Version(1, 1, 0);
 	public override Version RequiredExiledVersion => new Version(8, 0, 0);
 
 	public override void OnEnabled()

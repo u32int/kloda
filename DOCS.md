@@ -5,7 +5,8 @@ kloda:
   is_enabled: true
   debug: false
   broadcast_duration: 5
-  discord_webhook_url: ''
+  discord_webhook_administrative_url: ''
+  discord_webhook_hurt_notifications_url: ''
   discord_webhook_enable: false
   discord_nickname: 'kloda'
   discord_avatar_url: '<omited>'
@@ -43,8 +44,13 @@ kloda:
 ##### BroadcastDuration
 Sets the duration of the broadcast displayed as notifications to the attacker/victim of team damage
 
-##### DiscordWebhookUrl
-[Webhook](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) url
+#### DiscordWebhooks
+[Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) urls.
+##### DiscordWebhookAdministrativeUrl
+Webhook used for adminstrative messages; i.e. bans/kicks/mutes
+
+##### DiscordWebhookHurtNotificationsUrl
+Webhook used for information about player-hurting events: teamkills/teamdamage/suicides etc.
 
 ##### DiscordWebhookCooldown
 Cooldown between webhook messages sent to discord. Don't set it under two or you might run into rate-limits.
