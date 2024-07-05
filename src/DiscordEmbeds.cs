@@ -6,6 +6,18 @@ using System.Net;
 using System.Net.Http;
 using Utf8Json;
 
+public class DiscordMessage
+{
+	public StringContent Content;
+	public string WebhookUrl;
+
+	public DiscordMessage(StringContent content, string webhookUrl)
+	{
+		this.Content = content;
+		this.WebhookUrl = webhookUrl;
+	}
+}
+
 public class DiscordEmbed 
 {
 	public string Content { get; set; }

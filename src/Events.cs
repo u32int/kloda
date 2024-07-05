@@ -1,9 +1,11 @@
 namespace kloda;
 
 using Exiled.API.Features;
-using Exiled.Events.EventArgs;
+using Exiled.CustomRoles.API;
 using Exiled.Events.EventArgs.Player;
+using Exiled.API.Enums;
 using PlayerRoles;
+using System;
 
 public class EventHandler
 {
@@ -45,9 +47,9 @@ public class EventHandler
 		{
 			ev.Attacker.ClearBroadcasts();
 			ev.Attacker.Broadcast(
-
-					Kloda.instance.Config.BroadcastDuration, 
-					Template.Replace(Kloda.instance.Config.AttackerDamageMsg, ev.Player, ev.Attacker)
+				duration: Kloda.instance.Config.BroadcastDuration, 
+				message: Template.Replace(Kloda.instance.Config.AttackerDamageMsg, ev.Player, ev.Attacker)
+				// type: Broadcast.BroadcastFlags.Normal // <-- This thing just doesn't want to compile...
 			);
 		}
 
@@ -73,12 +75,6 @@ public class EventHandler
 		if (ev.Attacker == null)
 			return;
 
-		if (Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Attacker.Role)
-		    && Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Player.Role))
-		{
-			return;
-		}
-
 		// Suicide
 		if (ev.Attacker == ev.Player && Kloda.instance.Config.SuicideWebhookEnable)
 		{
@@ -92,6 +88,13 @@ public class EventHandler
 		{
 			Webhook.QueueCombinedTemplated(Kloda.instance.Config.CuffedKillWebhookMsg, 
 						       ev.Player, ev.Attacker, ev.DamageHandler);
+			return;
+		}
+
+		// Teamkill whitelist check
+		if (Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Attacker.Role)
+		    && Kloda.instance.Config.TeamHarmRoleWhiteList.Contains(ev.Player.Role))
+		{
 			return;
 		}
 

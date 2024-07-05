@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Exiled.API.Features;
 using PlayerRoles;
+using PlayerStatsSystem;
 using Exiled.Events.EventArgs.Player;
 using MEC;
 
@@ -19,7 +20,8 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public ushort BroadcastDuration { get; set; } = 5;
 
 	// Discord
-	public string DiscordWebhookUrl { get; set; } = "";
+	public string DiscordWebhookAdministrativeUrl { get; set; } = ""; // separate 
+	public string DiscordWebhookHurtNotificationsUrl { get; set; } = ""; // combined
 	public bool DiscordWebhookEnable { get; set; } = false;
 	public string DiscordNickname { get; set; } = "kloda";
 	public string DiscordAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
@@ -104,6 +106,13 @@ public class Kloda: Plugin<Config>
 		Log.Info("init complete");
 	}
 
+	private static List<T> GetEnumList<T>()
+	{
+		T[] array = (T[])Enum.GetValues(typeof(T));
+		List<T> list = new List<T>(array);
+		return list;
+	}	
+
 	public override void OnDisabled()
 	{
 		Exiled.Events.Handlers.Player.Verified -= EventHandler.Verified;
@@ -162,6 +171,7 @@ public class Kloda: Plugin<Config>
 
 		this.Config.BanWebhookMsg = TargetIssuerReplace(this.Config.BanWebhookMsg);
 		this.Config.MuteWebhookMsg = TargetIssuerReplace(this.Config.MuteWebhookMsg);
+		this.Config.UnMuteWebhookMsg = TargetIssuerReplace(this.Config.UnMuteWebhookMsg);
 		this.Config.KickWebhookMsg = TargetIssuerReplace(this.Config.KickWebhookMsg);
 
 		Log.Info("config normalized");

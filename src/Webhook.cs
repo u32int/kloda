@@ -17,15 +17,15 @@ using Utf8Json;
 public static class Webhook
 {
 	static HttpClient hc = new();
-	public static Queue<StringContent> messageQueue = new Queue<StringContent>();
+	public static Queue<DiscordMessage> messageQueue = new Queue<DiscordMessage>();
 
-	static async Task HookDoPost(StringContent jsonContent)
+	static async Task HookDoPost(DiscordMessage msg)
 	{
 		if (!Kloda.instance.Config.DiscordWebhookEnable)
 			return;
 
 		Log.Info("Sending discord webhook message..");
-		using HttpResponseMessage response = await hc.PostAsync(Kloda.instance.Config.DiscordWebhookUrl, jsonContent);
+		using HttpResponseMessage response = await hc.PostAsync(msg.WebhookUrl, msg.Content);
 		if (!response.IsSuccessStatusCode)
 		{
 			var jsonResponse = await response.Content.ReadAsStringAsync();			
@@ -36,13 +36,12 @@ public static class Webhook
 	public static SeparateEmbedList G_EmbedList = new SeparateEmbedList();
 	public static CombinedEmbedList G_CombinedList = new CombinedEmbedList();
 	
-	/// Add an embed to be sent
 	public static void QueueEmbed(DiscordEmbed embed)
 	{
 		if (!G_EmbedList.Add(embed))
 		{
 			StringContent sc = G_EmbedList.ClearIntoStringContent();
-			messageQueue.Enqueue(sc);
+			messageQueue.Enqueue(new DiscordMessage(sc, Kloda.instance.Config.DiscordWebhookAdministrativeUrl));
 			// The current embed still hasn't been sent, try adding it.
 			if (!G_EmbedList.Add(embed))
 			{
@@ -57,7 +56,8 @@ public static class Webhook
 		if (!G_CombinedList.Add(message))
 		{
 			StringContent sc = G_CombinedList.ClearIntoStringContent();
-			messageQueue.Enqueue(sc);
+			messageQueue.Enqueue(new DiscordMessage(sc, 
+								Kloda.instance.Config.DiscordWebhookHurtNotificationsUrl));
 			// The current message still hasn't been sent, try adding it.
 			if (!G_CombinedList.Add(message))
 			{
@@ -88,7 +88,9 @@ public static class Webhook
 			{
 				Log.Info("Pushing stale embed list..");
 				StringContent sc = G_EmbedList.ClearIntoStringContent();
-				messageQueue.Enqueue(sc);
+				messageQueue.Enqueue(
+						new DiscordMessage(sc, 
+							Kloda.instance.Config.DiscordWebhookAdministrativeUrl));
 			}
 
 			if (G_CombinedList.FirstTimestamp.HasValue && 
@@ -97,7 +99,9 @@ public static class Webhook
 			{
 				Log.Info("Pushing stale combined list..");
 				StringContent sc = G_CombinedList.ClearIntoStringContent();
-				messageQueue.Enqueue(sc);
+				messageQueue.Enqueue(
+						new DiscordMessage(sc, 
+							Kloda.instance.Config.DiscordWebhookHurtNotificationsUrl));
 			}
 
 			// Send the first message in queue

@@ -1,15 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    </PropertyGroup>
-
-    <PropertyGroup>
+    	<TargetFramework>net48</TargetFramework>
+    	<ImplicitUsings>enable</ImplicitUsings>
+    	<Nullable>enable</Nullable>
    	<LangVersion>10.0</LangVersion>
     </PropertyGroup>
-
 
 
   <ItemGroup>
@@ -19,8 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
- 	<Reference Include="Assembly-CSharp">
+ 	<Reference Include="Assembly-CSharp-firstpass">
 		<HintPath>./server_dlls/Assembly-CSharp-firstpass.dll</HintPath>
+	</Reference>
+ 	<Reference Include="Assembly-CSharp">
+		<HintPath>./server_dlls/Assembly-CSharp.dll</HintPath>
 	</Reference>
  	<Reference Include="UnityEngine">
 		<HintPath>./server_dlls/UnityEngine.dll</HintPath>
