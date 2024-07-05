@@ -33,8 +33,8 @@ public static class Webhook
 		}
 	}
 
-	public static EmbedList G_EmbedList = new EmbedList();
-	public static CombinedList G_CombinedList = new CombinedList();
+	public static SeparateEmbedList G_EmbedList = new SeparateEmbedList();
+	public static CombinedEmbedList G_CombinedList = new CombinedEmbedList();
 	
 	/// Add an embed to be sent
 	public static void QueueEmbed(DiscordEmbed embed)

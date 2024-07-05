@@ -73,7 +73,7 @@ public class DiscordEmbed
 /// and it is up to the caller to potentially call ClearIntoStringContent 
 /// which does what is says, combining all the list elements into a single json StringContent
 /// ready to be sent as a discord webhook.
-public class EmbedList 
+public class SeparateEmbedList
 {
 	public List<object> Embeds { get; set; } = new List<object>();
 	public int TotalLength { get; set; } = 0;
@@ -116,10 +116,10 @@ public class EmbedList
 	}
 }
 
-/// Similar to EmbedList but for lower priority messages like team damage etc.
+/// Similar to SeparateEmbedList but for lower priority messages like team damage etc.
 /// Combines messages (roughly up to discord character limit) into a single
 /// large embed.
-public class CombinedList
+public class CombinedEmbedList
 {
 	public string LogText { get; set; } = "";
 	public DateTime? FirstTimestamp { get; set; } = null;

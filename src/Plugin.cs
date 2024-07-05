@@ -27,12 +27,14 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public string EmbedJoinColor { get; set; } = "22c17f";
 	public string EmbedBanColor { get; set; } = "d13934";
 	public string EmbedMuteColor { get; set; } = "c68e2b";
+	public string EmbedUnMuteColor { get; set; } = "c68e2b";
 	public string EmbedKickColor { get; set; } = "eae738";
 
 	// Damage 
 	public bool IgnoreDamageAfterRoundEnd { get; set; } = true;
 	public bool TeamDamageWebhookEnable { get; set; } = true;
 	public string TeamDamageWebhookMsg { get; set; } = "**%Attacker%** damaged their teammate **%Victim%**";
+	public string TeamDamageWebhookUrl { get; set; } = "";
 	public bool NotifyAttacker { get; set; } = true;
 	public string AttackerDamageMsg { get; set; } = "<color=red>Warning</color> You've attacked your teammate";
 	public bool NotifyVictim { get; set; } = false;
@@ -55,6 +57,8 @@ public class Config : Exiled.API.Interfaces.IConfig
 	// Mutes
 	public bool MuteWebhookEnable { get; set; } = true;
 	public string MuteWebhookMsg { get; set; } = "**%Target%** was muted.";
+	public bool UnMuteWebhookEnable { get; set; } = true;
+	public string UnMuteWebhookMsg { get; set; } = "**%Target%** was unmuted.";
 
 	// Kicking
 	public bool KickWebhookEnable { get; set; } = true;
@@ -84,6 +88,7 @@ public class Kloda: Plugin<Config>
 		Exiled.Events.Handlers.Player.Hurting += EventHandler.Hurting;
 		Exiled.Events.Handlers.Player.Banned += EventHandler.Banned;
 		Exiled.Events.Handlers.Player.IssuingMute += EventHandler.Muted;
+		Exiled.Events.Handlers.Player.RevokingMute += EventHandler.MuteRevoked;
 		Exiled.Events.Handlers.Player.Kicking += EventHandler.Kick;
 
 		base.OnEnabled();
@@ -101,6 +106,7 @@ public class Kloda: Plugin<Config>
 		Exiled.Events.Handlers.Player.Hurting -= EventHandler.Hurting;
 		Exiled.Events.Handlers.Player.Banned -= EventHandler.Banned;
 		Exiled.Events.Handlers.Player.IssuingMute -= EventHandler.Muted;
+		Exiled.Events.Handlers.Player.RevokingMute -= EventHandler.MuteRevoked;
 		Exiled.Events.Handlers.Player.Kicking -= EventHandler.Kick;
 
 		base.OnDisabled();

@@ -112,7 +112,7 @@ public class EventHandler
 
 	public static void Muted(IssuingMuteEventArgs ev)
 	{
-		if (Kloda.instance.Config.BanWebhookEnable && ev.IsAllowed)
+		if (Kloda.instance.Config.MuteWebhookEnable && ev.IsAllowed)
 		{
 			string WebhookMsg = Kloda.instance.Config.MuteWebhookMsg
 				.Replace("%IsIntercom%", ev.IsIntercom.ToString());
@@ -120,6 +120,20 @@ public class EventHandler
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Player),
 				colorHex: Kloda.instance.Config.EmbedMuteColor
+			));
+		}
+	}
+
+	public static void MuteRevoked(RevokingMuteEventArgs ev)
+	{
+		if (Kloda.instance.Config.UnMuteWebhookEnable && ev.IsAllowed)
+		{
+			string WebhookMsg = Kloda.instance.Config.UnMuteWebhookMsg
+				.Replace("%IsIntercom%", ev.IsIntercom.ToString());
+
+			Webhook.QueueEmbed(new DiscordEmbed(
+				content: Template.Replace(WebhookMsg, ev.Player),
+				colorHex: Kloda.instance.Config.EmbedUnMuteColor
 			));
 		}
 	}
