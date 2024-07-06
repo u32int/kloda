@@ -41,7 +41,7 @@ public static class Webhook
 		if (!G_EmbedList.Add(embed))
 		{
 			StringContent sc = G_EmbedList.ClearIntoStringContent();
-			messageQueue.Enqueue(new DiscordMessage(sc, Kloda.instance.Config.DiscordWebhookAdministrativeUrl));
+			messageQueue.Enqueue(new DiscordMessage(sc, Kloda.instance.Config.DiscordAdministrativeWebhookUrl));
 			// The current embed still hasn't been sent, try adding it.
 			if (!G_EmbedList.Add(embed))
 			{
@@ -57,7 +57,7 @@ public static class Webhook
 		{
 			StringContent sc = G_CombinedList.ClearIntoStringContent();
 			messageQueue.Enqueue(new DiscordMessage(sc, 
-								Kloda.instance.Config.DiscordWebhookHurtNotificationsUrl));
+								Kloda.instance.Config.DiscordHurtNotificationsWebhookUrl));
 			// The current message still hasn't been sent, try adding it.
 			if (!G_CombinedList.Add(message))
 			{
@@ -90,7 +90,7 @@ public static class Webhook
 				StringContent sc = G_EmbedList.ClearIntoStringContent();
 				messageQueue.Enqueue(
 						new DiscordMessage(sc, 
-							Kloda.instance.Config.DiscordWebhookAdministrativeUrl));
+							Kloda.instance.Config.DiscordAdministrativeWebhookUrl));
 			}
 
 			if (G_CombinedList.FirstTimestamp.HasValue && 
@@ -101,7 +101,7 @@ public static class Webhook
 				StringContent sc = G_CombinedList.ClearIntoStringContent();
 				messageQueue.Enqueue(
 						new DiscordMessage(sc, 
-							Kloda.instance.Config.DiscordWebhookHurtNotificationsUrl));
+							Kloda.instance.Config.DiscordHurtNotificationsWebhookUrl));
 			}
 
 			// Send the first message in queue

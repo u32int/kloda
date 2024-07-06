@@ -71,8 +71,8 @@ public class DiscordEmbed
                 return new StringContent(
 			Encoding.UTF8.GetString(
 				Utf8Json.JsonSerializer.Serialize<object>(new { 
-					username = Kloda.instance.Config.DiscordNickname, 
-					avatar_url = Kloda.instance.Config.DiscordAvatarUrl,
+					username = Kloda.instance.Config.DiscordHurtNotificationsNickname, 
+					avatar_url = Kloda.instance.Config.DiscordHurtNotificationsAvatarUrl,
 					embeds = new List<object>() { this.IntoObject() },
 				})
 			), 
@@ -112,8 +112,8 @@ public class SeparateEmbedList
 		StringContent sc = new StringContent(
 			Encoding.UTF8.GetString(
 				Utf8Json.JsonSerializer.Serialize<object>(new { 
-					username = Kloda.instance.Config.DiscordNickname, 
-					avatar_url = Kloda.instance.Config.DiscordAvatarUrl,
+					username = Kloda.instance.Config.DiscordAdministrativeNickname, 
+					avatar_url = Kloda.instance.Config.DiscordAdministrativeAvatarUrl,
 					embeds = this.Embeds,
 				})
 			), 

@@ -20,11 +20,13 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public ushort BroadcastDuration { get; set; } = 5;
 
 	// Discord
-	public string DiscordWebhookAdministrativeUrl { get; set; } = ""; // separate 
-	public string DiscordWebhookHurtNotificationsUrl { get; set; } = ""; // combined
+	public string DiscordAdministrativeWebhookUrl { get; set; } = ""; // separate 
+	public string DiscordAdministrativeNickname { get; set; } = "kloda";
+	public string DiscordAdministrativeAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
+	public string DiscordHurtNotificationsWebhookUrl { get; set; } = ""; // combined
+	public string DiscordHurtNotificationsNickname { get; set; } = "kloda";
+	public string DiscordHurtNotificationsAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
 	public bool DiscordWebhookEnable { get; set; } = false;
-	public string DiscordNickname { get; set; } = "kloda";
-	public string DiscordAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
 	public float DiscordWebhookCooldown { get; set; } = 5;
 	public float DiscordWebhookQueueFlush { get; set; } = 10;
 	public string EmbedJoinColor { get; set; } = "22c17f";
@@ -133,8 +135,6 @@ public class Kloda: Plugin<Config>
 	// 	In the PlayerJoinMsg option: %Nick% -> %PlayerA_Nick%
 	void NormalizeConfigMessages()
 	{
-		// TODO: replace kill stuff you know what to do 
-
 		Func<string, string> GenericReplace = 
 			msg => msg
 				.Replace("%Player%", "%PlayerA_Nick%")
@@ -150,7 +150,7 @@ public class Kloda: Plugin<Config>
 				.Replace("%Victim_SteamID%", "%PlayerA_SteamID%")
 				.Replace("%Victim_Role%", "%PlayerA_Role%")
 				.Replace("%Attacker%", "%PlayerB_Nick%")
-				.Replace("%Attacker_SteamID%", "%PlayerB_ID%")
+				.Replace("%Attacker_SteamID%", "%PlayerB_SteamID%")
 				.Replace("%Attacker_Role%", "%PlayerB_Role%");
 
 		this.Config.AttackerDamageMsg = VictimAttackerReplace(this.Config.AttackerDamageMsg);
@@ -162,10 +162,10 @@ public class Kloda: Plugin<Config>
 		Func<string, string> TargetIssuerReplace = 
 			msg => msg
 				.Replace("%Target%", "%PlayerA_Nick%")
-				.Replace("%Target_SteamID%", "%PlayerA_ID%")
+				.Replace("%Target_SteamID%", "%PlayerA_SteamID%")
 				.Replace("%Target_Role%", "%PlayerA_Role%")
 				.Replace("%Issuer%", "%PlayerB_Nick%")
-				.Replace("%Issuer_SteamID%", "%PlayerB_ID%")
+				.Replace("%Issuer_SteamID%", "%PlayerB_SteamID%")
 				.Replace("%Issuer_Role%", "%PlayerB_Role%");
 
 		this.Config.BanWebhookMsg = TargetIssuerReplace(this.Config.BanWebhookMsg);
