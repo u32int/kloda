@@ -24,7 +24,7 @@ public static class Webhook
 		if (!Kloda.instance.Config.DiscordWebhookEnable)
 			return;
 
-		Log.Info("Sending discord webhook message..");
+		Log.Debug("Sending discord webhook message..");
 		using HttpResponseMessage response = await hc.PostAsync(msg.WebhookUrl, msg.Content);
 		if (!response.IsSuccessStatusCode)
 		{
@@ -86,7 +86,7 @@ public static class Webhook
 			    (DateTime.Now - G_EmbedList.FirstTimestamp.Value).TotalSeconds > 
 			    					Kloda.instance.Config.DiscordWebhookQueueFlush)
 			{
-				Log.Info("Pushing stale embed list..");
+				Log.Debug("Pushing stale embed list..");
 				StringContent sc = G_EmbedList.ClearIntoStringContent();
 				messageQueue.Enqueue(
 						new DiscordMessage(sc, 
@@ -97,7 +97,7 @@ public static class Webhook
 			    (DateTime.Now - G_CombinedList.FirstTimestamp.Value).TotalSeconds > 
 			    					Kloda.instance.Config.DiscordWebhookQueueFlush)
 			{
-				Log.Info("Pushing stale combined list..");
+				Log.Debug("Pushing stale combined list..");
 				StringContent sc = G_CombinedList.ClearIntoStringContent();
 				messageQueue.Enqueue(
 						new DiscordMessage(sc, 

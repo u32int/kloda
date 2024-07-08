@@ -18,6 +18,7 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public bool IsEnabled { get; set; } = true;
 	public bool Debug { get; set; } = false;
 	public ushort BroadcastDuration { get; set; } = 5;
+	public string TimeZoneCode { get; set; } = "Local";
 
 	// Discord
 	public string DiscordAdministrativeWebhookUrl { get; set; } = ""; // separate 
@@ -84,7 +85,7 @@ public class Kloda: Plugin<Config>
 
 	public override string Name => "kloda";
 	public override string Author => "u32int";
-	public override Version Version => new Version(1, 1, 2);
+	public override Version Version => new Version(1, 1, 3);
 	public override Version RequiredExiledVersion => new Version(8, 0, 0);
 
 	public override void OnEnabled()
@@ -173,6 +174,6 @@ public class Kloda: Plugin<Config>
 		this.Config.UnMuteWebhookMsg = TargetIssuerReplace(this.Config.UnMuteWebhookMsg);
 		this.Config.KickWebhookMsg = TargetIssuerReplace(this.Config.KickWebhookMsg);
 
-		Log.Info("config normalized");
+		Log.Debug("config normalized");
 	}
 }

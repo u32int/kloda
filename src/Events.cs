@@ -109,9 +109,29 @@ public class EventHandler
 		{
 			var duration = TimeSpan.FromTicks(ev.Details.Expires - ev.Details.IssuanceTime);
 
+			DateTime issuanceTime = new DateTime(ev.Details.IssuanceTime);
+			DateTime expiryDate = new DateTime(ev.Details.Expires);
+			try {
+				if (Kloda.instance.Config.TimeZoneCode == "Local")
+				{
+					issuanceTime = issuanceTime.ToLocalTime();
+					expiryDate = expiryDate.ToLocalTime();
+				} 
+				else 
+				{
+					TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById(Kloda.instance.Config.TimeZoneCode);
+					issuanceTime = TimeZoneInfo.ConvertTimeFromUtc(issuanceTime, tzi);
+					expiryDate = TimeZoneInfo.ConvertTimeFromUtc(expiryDate, tzi);
+				}
+			}
+			catch (TimeZoneNotFoundException)
+			{
+				Log.Error($"Error while converting time to time zone '{Kloda.instance.Config.TimeZoneCode}': time zone doesn't exist. Falling back to UTC");
+			}
+
 			string WebhookMsg = Kloda.instance.Config.BanWebhookMsg
-				.Replace("%IssuanceTime%", new DateTime(ev.Details.IssuanceTime).ToString("yyyy-MM-dd HH:mm:ss"))
-				.Replace("%ExpiryDate%", new DateTime(ev.Details.Expires).ToString("yyyy-MM-dd HH:mm:ss"))
+				.Replace("%IssuanceTime%", issuanceTime.ToString("yyyy-MM-dd HH:mm:ss"))
+				.Replace("%ExpiryDate%", expiryDate.ToString("yyyy-MM-dd HH:mm:ss"))
 				.Replace("%Duration%", $"{duration.ToString("%d")} Days {duration.ToString("%h")} Hours {duration.ToString("%m")} Minutes {duration.ToString("%s")} Seconds")
 				.Replace("%Reason%", ev.Details.Reason);
 

@@ -5,6 +5,7 @@ kloda:
   is_enabled: true
   debug: false
   broadcast_duration: 5
+  time_zone_code: "Local"
   discord_webhook_administrative_url: ''
   discord_webhook_hurt_notifications_url: ''
   discord_webhook_enable: false
@@ -43,6 +44,10 @@ kloda:
 ## Option explanations
 ##### BroadcastDuration
 Sets the duration of the broadcast displayed as notifications to the attacker/victim of team damage
+
+##### TimeZoneCode
+c# TimeZoneInfo time zone code; eg. "Central Standard Time".
+Use `Local` for server local time.
 
 #### DiscordWebhooks
 [Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) urls.
