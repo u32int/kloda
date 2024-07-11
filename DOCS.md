@@ -9,11 +9,11 @@ kloda:
   discord_administrative_webhook_url: ''
   discord_administrative_nickname: 'kloda'
   discord_administrative_avatar_url: 'https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69'
-  discord_administrative_footer_suffix: ''
+  discord_administrative_footer: '%DateTime%'
   discord_hurt_notifications_webhook_url: ''
   discord_hurt_notifications_nickname: 'kloda'
   discord_hurt_notifications_avatar_url: 'https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69'
-  discord_hurt_notifications_footer_suffix: ''
+  discord_hurt_notifications_footer: '%FirstTimestamp% to %LastTimestampHour%'
   discord_webhook_enable: false
   discord_webhook_cooldown: 5
   discord_webhook_queue_flush: 10
@@ -64,8 +64,19 @@ Use `Local` for server local time.
 ##### DiscordWebhookAdministrativeUrl
 Webhook used for adminstrative messages; i.e. bans/kicks/mutes
 
+##### DiscordAdministrativeFooter
+Footer for the discord webhook messages (Administrative). 
+Accepts %DateTime% as a template argument.
+
 ##### DiscordWebhookHurtNotificationsUrl
 Webhook used for information about player-hurting events: teamkills/teamdamage/suicides etc.
+
+##### DiscordHurtNotificationsFooter
+Footer for the discord webhook messages. (HurtNotifications)
+Accepts the following template arguments:
+    %FirstTimestamp%: Full date-time timestamp of the first notification in the list sent
+    %LastTimestampHours%: Only the hours part of a timestamp for the last notification in the queue.
+    %DateTime%: Full date-time timestamp (current time)
 
 ##### DiscordWebhookCooldown
 Cooldown between webhook messages sent to discord. Don't set it under two or you might run into rate-limits.

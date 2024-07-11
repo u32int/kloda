@@ -24,11 +24,11 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public string DiscordAdministrativeWebhookUrl { get; set; } = ""; // separate 
 	public string DiscordAdministrativeNickname { get; set; } = "kloda";
 	public string DiscordAdministrativeAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
-	public string DiscordAdministrativeFooterSuffix { get; set; } = "";
+	public string DiscordAdministrativeFooter { get; set; } = "%DateTime%";
 	public string DiscordHurtNotificationsWebhookUrl { get; set; } = ""; // combined
 	public string DiscordHurtNotificationsNickname { get; set; } = "kloda";
 	public string DiscordHurtNotificationsAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
-	public string DiscordHurtNotificationsFooterSuffix { get; set; } = "";
+	public string DiscordHurtNotificationsFooter { get; set; } = "%FirstTimestamp% to %LastTimestampHour%";
 	public bool DiscordWebhookEnable { get; set; } = false;
 	public float DiscordWebhookCooldown { get; set; } = 5;
 	public float DiscordWebhookQueueFlush { get; set; } = 10;
@@ -70,7 +70,8 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public string MuteWebhookMsg { get; set; } = "**%Target%** was muted.";
 	public bool UnMuteWebhookEnable { get; set; } = true;
 	public string UnMuteWebhookMsg { get; set; } = "**%Target%** was unmuted.";
-	public bool IntercomCheckReturnsBool { get; set; } = true;
+	public string IntercomTextIfTrue { get; set; } = "True";
+	public string IntercomTextIfFalse { get; set; } = "False";
 
 	// Kicking
 	public bool KickWebhookEnable { get; set; } = true;
@@ -88,7 +89,7 @@ public class Kloda: Plugin<Config>
 
 	public override string Name => "kloda";
 	public override string Author => "u32int";
-	public override Version Version => new Version(1, 1, 4);
+	public override Version Version => new Version(1, 1, 5);
 	public override Version RequiredExiledVersion => new Version(8, 0, 0);
 
 	public override void OnEnabled()

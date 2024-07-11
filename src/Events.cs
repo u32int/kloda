@@ -16,7 +16,8 @@ public class EventHandler
 		
 		Webhook.QueueEmbed(new DiscordEmbed(
 			content: Template.Replace(Kloda.instance.Config.JoinWebhookMsg, playerA: ev.Player, playerB: null),
-			colorHex: Kloda.instance.Config.EmbedJoinColor
+			colorHex: Kloda.instance.Config.EmbedJoinColor,
+			footerText: Kloda.instance.Config.DiscordAdministrativeFooter
 		));
 	}
 
@@ -48,7 +49,7 @@ public class EventHandler
 			ev.Attacker.ClearBroadcasts();
 			ev.Attacker.ShowHint(Template.Replace(
 						Kloda.instance.Config.AttackerDamageMsg, ev.Player, ev.Attacker), 
-					     Kloda.instance.Config.BroadcastDuration);
+					        Kloda.instance.Config.BroadcastDuration);
 		}
 
 		if (Kloda.instance.Config.NotifyVictim)
@@ -142,7 +143,8 @@ public class EventHandler
 
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Target, ev.Player),
-				colorHex: Kloda.instance.Config.EmbedBanColor
+				colorHex: Kloda.instance.Config.EmbedBanColor,
+				footerText: Kloda.instance.Config.DiscordAdministrativeFooter
 			));
 		}
 	}
@@ -151,22 +153,14 @@ public class EventHandler
 	{
 		if (Kloda.instance.Config.MuteWebhookEnable && ev.IsAllowed)
 		{
-			string intercomRepl;
-			if (Kloda.instance.Config.IntercomCheckReturnsBool)
-			{
-				intercomRepl = ev.IsIntercom.ToString();
-			}
-			else
-			{
-				intercomRepl = ev.IsIntercom ? "ICOM" : "";
-			}
-
 			string WebhookMsg = Kloda.instance.Config.MuteWebhookMsg
-				.Replace("%IsIntercom%", intercomRepl);
+				.Replace("%IsIntercom%", ev.IsIntercom ? Kloda.instance.Config.IntercomTextIfTrue :
+									 Kloda.instance.Config.IntercomTextIfFalse);
 
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Player),
-				colorHex: Kloda.instance.Config.EmbedMuteColor
+				colorHex: Kloda.instance.Config.EmbedMuteColor,
+				footerText: Kloda.instance.Config.DiscordAdministrativeFooter
 			));
 		}
 	}
@@ -175,22 +169,14 @@ public class EventHandler
 	{
 		if (Kloda.instance.Config.UnMuteWebhookEnable && ev.IsAllowed)
 		{
-			string intercomRepl;
-			if (Kloda.instance.Config.IntercomCheckReturnsBool)
-			{
-				intercomRepl = ev.IsIntercom.ToString();
-			}
-			else
-			{
-				intercomRepl = ev.IsIntercom ? "ICOM" : "";
-			}
-
 			string WebhookMsg = Kloda.instance.Config.UnMuteWebhookMsg
-				.Replace("%IsIntercom%", intercomRepl);
+				.Replace("%IsIntercom%", ev.IsIntercom ? Kloda.instance.Config.IntercomTextIfTrue :
+									 Kloda.instance.Config.IntercomTextIfFalse);
 
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Player),
-				colorHex: Kloda.instance.Config.EmbedUnMuteColor
+				colorHex: Kloda.instance.Config.EmbedUnMuteColor,
+				footerText: Kloda.instance.Config.DiscordAdministrativeFooter
 			));
 		}
 	}
@@ -204,7 +190,8 @@ public class EventHandler
 
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Target, ev.Player),
-				colorHex: Kloda.instance.Config.EmbedKickColor
+				colorHex: Kloda.instance.Config.EmbedKickColor,
+				footerText: Kloda.instance.Config.DiscordAdministrativeFooter
 			));
 		}
 	}
