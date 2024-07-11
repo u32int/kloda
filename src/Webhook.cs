@@ -76,9 +76,6 @@ public static class Webhook
 	// Runs in the background and hopefully delegates things to be actually sent..
 	public static IEnumerator<float> SenderLoop()
 	{
-		// TODO: this entire function is a little silly, perhaps an async queue type exists
-		// in csharp that would work better here? 
-		// We definitely shouldn't be doing this based on a fixed timeout..
 		for (;;) 
 		{
 			// Check if any of the queues have stale messages

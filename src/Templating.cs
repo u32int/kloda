@@ -10,7 +10,7 @@ public class Template
 	public static string Replace(string msg, Player? playerA, Player? playerB = null, DamageHandler? dmg = null)
 	{
 		string templated = msg
-				.Replace("%Time%", DateTime.Now.ToString());
+				.Replace("%DateTime%", DateTime.Now.ToString());
 
 		if (playerA is Player pA)
 		{

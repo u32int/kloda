@@ -72,7 +72,7 @@ These options control the in-game broadcast notifications.
 
 ## Templates
 In most of the `_msg` you can use string templates aka this `%Value%` syntax.
-For all of these you can use `%Time%` to get the timestamp of the event.
+For all of these you can use `%DateTime%` to get the timestamp of the event.
 
 **Important**
 You can suffix any of `Player` `Victim` `Attacker` `Target` `Issuer` with `_SteamId` or `_Role` to get the player's steamid64 and role respectively.

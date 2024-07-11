@@ -72,18 +72,24 @@ public class EventHandler
 			return;
 
 		// Suicide
-		if (ev.Attacker == ev.Player && Kloda.instance.Config.SuicideWebhookEnable)
+		if (ev.Attacker == ev.Player)
 		{
-			Webhook.QueueCombinedTemplated(Kloda.instance.Config.SuicideWebhookMsg, 
-						       ev.Player, null, ev.DamageHandler);
+			if (Kloda.instance.Config.SuicideWebhookEnable)
+			{
+				Webhook.QueueCombinedTemplated(Kloda.instance.Config.SuicideWebhookMsg, 
+						       	       ev.Player, null, ev.DamageHandler);
+			}
 			return;
 		}
 
 		// Killed while handcuffed
-		if (ev.Player.IsCuffed && Kloda.instance.Config.CuffedKillWebhookEnable)
+		if (ev.Player.IsCuffed && ev.Player.Role.Side != ev.Attacker.Role.Side)
 		{
-			Webhook.QueueCombinedTemplated(Kloda.instance.Config.CuffedKillWebhookMsg, 
-						       ev.Player, ev.Attacker, ev.DamageHandler);
+			if (Kloda.instance.Config.CuffedKillWebhookEnable)
+			{
+				Webhook.QueueCombinedTemplated(Kloda.instance.Config.CuffedKillWebhookMsg, 
+						       	       ev.Player, ev.Attacker, ev.DamageHandler);
+			}
 			return;
 		}
 
@@ -99,7 +105,6 @@ public class EventHandler
 		{
 			Webhook.QueueCombinedTemplated(Kloda.instance.Config.TeamKillWebhookMsg, 
 						       ev.Player, ev.Attacker, ev.DamageHandler);
-			return;
 		}
 	}
 
@@ -146,8 +151,18 @@ public class EventHandler
 	{
 		if (Kloda.instance.Config.MuteWebhookEnable && ev.IsAllowed)
 		{
+			string intercomRepl;
+			if (Kloda.instance.Config.IntercomCheckReturnsBool)
+			{
+				intercomRepl = ev.IsIntercom.ToString();
+			}
+			else
+			{
+				intercomRepl = ev.IsIntercom ? "ICOM" : "";
+			}
+
 			string WebhookMsg = Kloda.instance.Config.MuteWebhookMsg
-				.Replace("%IsIntercom%", ev.IsIntercom.ToString());
+				.Replace("%IsIntercom%", intercomRepl);
 
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Player),
@@ -160,8 +175,18 @@ public class EventHandler
 	{
 		if (Kloda.instance.Config.UnMuteWebhookEnable && ev.IsAllowed)
 		{
+			string intercomRepl;
+			if (Kloda.instance.Config.IntercomCheckReturnsBool)
+			{
+				intercomRepl = ev.IsIntercom.ToString();
+			}
+			else
+			{
+				intercomRepl = ev.IsIntercom ? "ICOM" : "";
+			}
+
 			string WebhookMsg = Kloda.instance.Config.UnMuteWebhookMsg
-				.Replace("%IsIntercom%", ev.IsIntercom.ToString());
+				.Replace("%IsIntercom%", intercomRepl);
 
 			Webhook.QueueEmbed(new DiscordEmbed(
 				content: Template.Replace(WebhookMsg, ev.Player),

@@ -24,9 +24,11 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public string DiscordAdministrativeWebhookUrl { get; set; } = ""; // separate 
 	public string DiscordAdministrativeNickname { get; set; } = "kloda";
 	public string DiscordAdministrativeAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
+	public string DiscordAdministrativeFooterSuffix { get; set; } = "";
 	public string DiscordHurtNotificationsWebhookUrl { get; set; } = ""; // combined
 	public string DiscordHurtNotificationsNickname { get; set; } = "kloda";
 	public string DiscordHurtNotificationsAvatarUrl { get; set; } = "https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69";
+	public string DiscordHurtNotificationsFooterSuffix { get; set; } = "";
 	public bool DiscordWebhookEnable { get; set; } = false;
 	public float DiscordWebhookCooldown { get; set; } = 5;
 	public float DiscordWebhookQueueFlush { get; set; } = 10;
@@ -68,6 +70,7 @@ public class Config : Exiled.API.Interfaces.IConfig
 	public string MuteWebhookMsg { get; set; } = "**%Target%** was muted.";
 	public bool UnMuteWebhookEnable { get; set; } = true;
 	public string UnMuteWebhookMsg { get; set; } = "**%Target%** was unmuted.";
+	public bool IntercomCheckReturnsBool { get; set; } = true;
 
 	// Kicking
 	public bool KickWebhookEnable { get; set; } = true;
@@ -107,13 +110,6 @@ public class Kloda: Plugin<Config>
 		Timing.RunCoroutine(Webhook.SenderLoop());
 		Log.Info("init complete");
 	}
-
-	private static List<T> GetEnumList<T>()
-	{
-		T[] array = (T[])Enum.GetValues(typeof(T));
-		List<T> list = new List<T>(array);
-		return list;
-	}	
 
 	public override void OnDisabled()
 	{

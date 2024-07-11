@@ -24,14 +24,14 @@ public class DiscordEmbed
 	public int Color { get; set; }
 	public string Footer { get; set; }
 
-	public DiscordEmbed(string content, string colorHex = "e6e6e6", bool footerTimestamp = true)
+	public DiscordEmbed(string content, string colorHex = "e6e6e6", string footerText = "")
 	{
 		this.Content = content;	
 		this.SetColorHex(colorHex);
-		if (footerTimestamp)
-			this.Footer = DateTime.Now.ToString();
+		if (footerText == "")
+			this.Footer = Template.Replace("%Date%", null);
 		else
-			this.Footer = "";
+			this.Footer = Template.Replace(footerText + $" {Kloda.instance.Config.DiscordAdministrativeFooterSuffix}", null);
 	}
 
 	public void SetColorHex(string hexColor)
@@ -155,8 +155,10 @@ public class CombinedEmbedList
 
 	public StringContent ClearIntoStringContent()
 	{
-		DiscordEmbed embed = new DiscordEmbed(content: this.LogText, footerTimestamp: false);
-		embed.Footer = $"{this.FirstTimestamp} To {DateTime.Now.ToString("HH:mm:ss")}";
+		DiscordEmbed embed = new DiscordEmbed(
+				content: this.LogText,
+				footerText: $"{this.FirstTimestamp} To {DateTime.Now.ToString("HH:mm:ss")} {Kloda.instance.Config.DiscordHurtNotificationsFooterSuffix}"
+		);
 		this.FirstTimestamp = null;
 		this.LogText = "";
 		return embed.IntoStringContent();
