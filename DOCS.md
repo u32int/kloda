@@ -5,18 +5,25 @@ kloda:
   is_enabled: true
   debug: false
   broadcast_duration: 5
-  time_zone_code: "Local"
-  discord_webhook_administrative_url: ''
-  discord_webhook_hurt_notifications_url: ''
+  time_zone_code: 'Local'
+  discord_administrative_webhook_url: ''
+  discord_administrative_nickname: 'kloda'
+  discord_administrative_avatar_url: 'https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69'
+  discord_administrative_footer_suffix: ''
+  discord_hurt_notifications_webhook_url: ''
+  discord_hurt_notifications_nickname: 'kloda'
+  discord_hurt_notifications_avatar_url: 'https://cdn.discordapp.com/attachments/859050843029766177/1258498039132323981/log_n.png?ex=66884322&is=6686f1a2&hm=491ad78b6630aa38e38cd8ba9af22e9d4634bfcd840b0bccd453e87a7d3ebc69'
+  discord_hurt_notifications_footer_suffix: ''
   discord_webhook_enable: false
-  discord_nickname: 'kloda'
-  discord_avatar_url: '<omited>'
   discord_webhook_cooldown: 5
   discord_webhook_queue_flush: 10
   embed_join_color: '22c17f'
   embed_ban_color: 'd13934'
   embed_mute_color: 'c68e2b'
+  embed_un_mute_color: 'c68e2b'
   embed_kick_color: 'eae738'
+  team_harm_role_white_list:
+  - ClassD
   ignore_damage_after_round_end: true
   team_damage_webhook_enable: true
   team_damage_webhook_msg: '**%Attacker%** damaged their teammate **%Victim%**'
@@ -32,11 +39,14 @@ kloda:
   suicide_webhook_enable: true
   suicide_webhook_msg: '**%Player%** died by suicide using **%DamageType%** :(('
   ban_webhook_enable: true
-  ban_webhook_msg: '**%Target%** was banned by **%Issuer%**.'
+  ban_webhook_msg: '**%Target%** was banned by **%Issuer%**. Reason: %Reason%. Duration: %Duration%. Expires: %ExpiryDate%'
   mute_webhook_enable: true
   mute_webhook_msg: '**%Target%** was muted.'
+  un_mute_webhook_enable: true
+  un_mute_webhook_msg: '**%Target%** was unmuted.'
+  intercom_check_returns_bool: true
   kick_webhook_enable: true
-  kick_webhook_msg: '**%Target%** was kicked by **%Issuer%**, reason: `%Reason%`'
+  kick_webhook_msg: '**%Target%** was kicked by **%Issuer%**. Reason: `%Reason%`.'
   join_webhook_enable: false
   join_webhook_msg: '**%Player%** joined the server!'
 ```
